@@ -18,6 +18,7 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { MenuComponent } from './menu/menu.component';
 import { DishService } from './services/dish.service';
+import { PromotionService } from './services/promotion.service';
 
 
 
@@ -50,7 +51,8 @@ import { DishService } from './services/dish.service';
     MatButtonModule
   ],
   providers: [
-    DishService
+    DishService,
+    PromotionService
   ],
   bootstrap: [AppComponent]
 })

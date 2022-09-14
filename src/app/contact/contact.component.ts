@@ -8,6 +8,8 @@ import { ContactType, Feedback } from '../shared/feedback';
   styleUrls: ['./contact.component.scss']
 })
 export class ContactComponent implements OnInit {
+
+  
 //  declaring feedback variable to FormGroup which is the form model
   feedbackForm: FormGroup;
   // declare the data model
@@ -100,7 +102,7 @@ export class ContactComponent implements OnInit {
   }
   
 
-
+                                  
 
   onSubmit() {
     this.feedback = this.feedbackForm.value;

@@ -35,7 +35,7 @@
 
   <div fxFlex="40" *ngIf="dish">
     <mat-list>
-        <h4>Comments</h4>
+        <h1>Comments</h1>
         <mat-list-item *ngFor="let comment of dish.comments">
         <p matLine> <span>{{comment.comment}}</span></p>
         <p matLine> <span>{{comment.rating}} Stars</span></p>
@@ -87,11 +87,11 @@
     </div>
 
   </div>
-  <div fxFlex [hidden]="dish">
+  <div fxFlex [hidden]="dish || errMess">
     <mat-spinner></mat-spinner> <h4>Loading . . . Please Wait</h4>
  </div>
-
- 
- 
- 
+ <div fxFlex *ngIf="errMess">
+  <h2>Error</h2>
+  <h4>{{errMess}}</h4>
+</div>
 </div>

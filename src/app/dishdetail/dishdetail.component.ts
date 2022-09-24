@@ -6,25 +6,21 @@ import { switchMap } from 'rxjs/operators';
 import { DishService } from '../services/dish.service';
 import { Comment } from '../shared/comment';
 import { Dish } from '../shared/dish';
-import { trigger, state, style, animate, transition } from '@angular/animations';
+import { visibility, flyInOut, expand } from '../animations/app.animation';
 
 
 @Component({
   selector: 'app-dishdetail',
   templateUrl: './dishdetail.component.html',
   styleUrls: ['./dishdetail.component.scss'],
+  host: {
+    '[@flyInOut]': 'true',
+    'style': 'display: block;'
+  },
   animations: [
-    trigger('visibility', [
-      state('shown', style({
-        transform: 'scale(1.0)',
-        opacity: 1
-      })),
-      state('hidden', style({
-        transform: 'scale(0.5)',
-        opacity: 0
-      })),
-      transition('* => *', animate('0.2s ease-in-out'))
-    ])
+    flyInOut(),
+     visibility(),
+     expand()
   ]
 })
 export class DishdetailComponent implements OnInit {
@@ -111,7 +107,7 @@ this.createForm();
         author: ['',[Validators.required, Validators.minLength(2), Validators.maxLength(25)] ],
         comment: ['',[Validators.required, Validators.minLength(1)] ],
         rating: '',
-        date: ''
+        
       
     });
         this.commentForm.valueChanges
@@ -159,14 +155,8 @@ this.createForm();
     this.commentForm.reset({
       author: '',
       comment: '',
-      date: '',
       rating: 5
-
-      
     });
     this.commentFormDirective.resetForm();
   }
-
-
-
 }

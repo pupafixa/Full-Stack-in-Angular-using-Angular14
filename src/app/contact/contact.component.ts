@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { expand, flyInOut } from '../animations/app.animation';
+import { FeedbackService } from '../services/feedback.service';
 import { ContactType, Feedback } from '../shared/feedback';
-import { flyInOut } from '../animations/app.animation';
+
 
 
 @Component({
@@ -13,18 +15,23 @@ import { flyInOut } from '../animations/app.animation';
     'style': 'display: block;'
   },
   animations: [
-    flyInOut()
+    flyInOut(),
+    expand()
   ]
 })
 export class ContactComponent implements OnInit {
 
-  
-//  declaring feedback variable to FormGroup which is the form model
+  errMess: string;
+
   feedbackForm: FormGroup;
-  // declare the data model
   feedback: Feedback;
-  // declare  contactType variable which is of the contactType string array
   contactType = ContactType;
+  submitFlag = false;
+  confirmFlag = false;
+  visibility = 'shown';
+
+
+
 
   // With this, the form allow the form to be reset to its prestine value
   @ViewChild('fform') feedbackFormDirective: NgForm;
@@ -58,14 +65,20 @@ export class ContactComponent implements OnInit {
       'email':         'Email not in valid format.'
     },
   };
+  feedbackConfirm: Feedback;
 
   // inject the FormBuilder into the constructor
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+  private feedbackService: FeedbackService) {
     // create a method createForm this will be invoked when the FormBuilder class is built the form will be created
     this.createForm();
    }
 
   ngOnInit(): void {
+     this.feedbackService.submitFeedback(this.feedback)
+    .subscribe((feedback) => this.feedback,
+    errmess => this.errMess = <any>errmess);
+    
   }
 
 // Adding validators
@@ -114,7 +127,10 @@ export class ContactComponent implements OnInit {
                                   
 
   onSubmit() {
+    this.submitFlag = true;
     this.feedback = this.feedbackForm.value;
+    this.feedbackService.submitFeedback(this.feedback)
+     .subscribe(confirm => {this.feedbackConfirm = confirm; this.confirmFlag = true;});
     console.log(this.feedback);
     // Reseting form after form is bieng submitted
     this.feedbackForm.reset({
@@ -127,6 +143,8 @@ export class ContactComponent implements OnInit {
       message: ''
 
     });
+    setTimeout(() => {this.submitFlag = false; this.confirmFlag = false;}, 5000);
+
     this.feedbackFormDirective.resetForm();
   }
 
